@@ -35,18 +35,18 @@ public class ArrayOperations {
 
         while (left <= right) {
             int mid = left + (right - left) / 2;
-            
+
             if (array[mid] == target) {
                 return mid;
             }
-            
+
             if (array[mid] < target) {
                 left = mid + 1;
             } else {
                 right = mid - 1;
             }
         }
-        
+
         return -1;
     }
 
@@ -57,16 +57,16 @@ public class ArrayOperations {
         }
 
         int[] newArray = new int[array.length + 1];
-        
+
         // Salin elemen sebelum indeks
         System.arraycopy(array, 0, newArray, 0, index);
-        
+
         // Sisipkan elemen baru
         newArray[index] = element;
-        
+
         // Salin sisa elemen
         System.arraycopy(array, index, newArray, index + 1, array.length - index);
-        
+
         return newArray;
     }
 
@@ -77,13 +77,13 @@ public class ArrayOperations {
         }
 
         int[] newArray = new int[array.length - 1];
-        
+
         // Salin elemen sebelum indeks
         System.arraycopy(array, 0, newArray, 0, index);
-        
+
         // Salin sisa elemen setelah indeks
         System.arraycopy(array, index + 1, newArray, index, array.length - index - 1);
-        
+
         return newArray;
     }
 }
@@ -133,7 +133,6 @@ class ArrayListOperations {
 // Kelas Perbandingan Kinerja
 class Comparison {
     public static void comparePerformance(int[] array, ArrayList<Integer> list) {
-        // Perbandingan Traversal
         long startTime, endTime;
 
         // Array Traversal
@@ -141,29 +140,47 @@ class Comparison {
         ArrayOperations arrayOps = new ArrayOperations(array);
         arrayOps.traverseArray();
         endTime = System.nanoTime();
-        System.out.printf("Waktu Traversal Array: %.4f ms%n", (endTime - startTime) / 1_000_000.0);
+        double arrayTraversalTime = (endTime - startTime) / 1_000_000.0;
+        System.out.printf("Waktu Traversal Array: %.4f ms%n", arrayTraversalTime);
+
+        System.out.println();
 
         // ArrayList Traversal
         startTime = System.nanoTime();
         ArrayListOperations listOps = new ArrayListOperations(list);
         listOps.traverseArrayList();
         endTime = System.nanoTime();
-        System.out.printf("Waktu Traversal ArrayList: %.4f ms%n", (endTime - startTime) / 1_000_000.0);
+        double listTraversalTime = (endTime - startTime) / 1_000_000.0;
+        System.out.printf("Waktu Traversal ArrayList: %.4f ms%n", listTraversalTime);
+
+        System.out.println();
 
         // Perbandingan Pencarian
         int searchTarget = 30;
-        
+
         startTime = System.nanoTime();
         int arrayIndex = arrayOps.linearSearch(searchTarget);
         endTime = System.nanoTime();
-        System.out.printf("Pencarian %d di Array: indeks %d, Waktu: %.4f ms%n", 
-                          searchTarget, arrayIndex, (endTime - startTime) / 1_000_000.0);
+        double arraySearchTime = (endTime - startTime) / 1_000_000.0;
+        System.out.printf("Pencarian %d di Array: indeks %d, Waktu: %.4f ms%n",
+                searchTarget, arrayIndex, arraySearchTime);
 
         startTime = System.nanoTime();
         int listIndex = listOps.searchElement(searchTarget);
         endTime = System.nanoTime();
-        System.out.printf("Pencarian %d di ArrayList: indeks %d, Waktu: %.4f ms%n", 
-                          searchTarget, listIndex, (endTime - startTime) / 1_000_000.0);
+        double listSearchTime = (endTime - startTime) / 1_000_000.0;
+        System.out.printf("Pencarian %d di ArrayList: indeks %d, Waktu: %.4f ms%n",
+                searchTarget, listIndex, listSearchTime);
+
+        // --- Ringkasan dalam bentuk tabel ---
+        System.out.println("\n--- Tabel Ringkasan Perbandingan ---");
+        System.out.println();
+        System.out.printf("%-20s | %-25s | %-25s%n", "Operasi", "Array (ms)", "ArrayList (ms)");
+        System.out.println("----------------------+---------------------------+---------------------------");
+        System.out.printf("%-20s | %-25.4f | %-25.4f%n", "Traversal", arrayTraversalTime, listTraversalTime);
+        System.out.printf("%-20s | %-25.4f | %-25.4f%n", "Pencarian", arraySearchTime, listSearchTime);
+
+        System.out.println();
     }
 
     public static void main(String[] args) {
